@@ -1,20 +1,22 @@
 import serial
-from time import sleep
+from tkinter import*
+
+root=Tk()
+root.geometry('300x300')
+
+lbl=Label(text='',font='Arial 24')
+lbl.pack()
+
+port = 'COM5'
+
+ser=serial.Serial(port=port,baudrate=57600)
+
+def func():
+    data = ser.readline()
+    data = data.decode('utf-8')
+    print('Light',data,end='')
+    lbl.config(data)
+    root.after(100,func)
 
 
-port='COM10'
-ser=serial.Serial(port=port)
-
-sleep(2)
-
-#читаем данные из ардуино
-data =ser.readline()
-print(data)
-
-#отправляем сообшение
-ser.write(b"b")
-data=ser.readline()
-print(data)
-
-def send_msg(msg : str):
-    ser.write(msg.encode('utf-8'))
+root.mainloop()
